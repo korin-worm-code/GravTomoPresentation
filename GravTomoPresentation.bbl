@@ -1,0 +1,332 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 0.9 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{ArfkenWeber95}{book}{}
+  \name{author}{2}{%
+    {{Arfken}{A.}%
+     {George~B.}{G.~B.}%
+     {}{}%
+     {}{}}%
+    {{Weber}{W.}%
+     {Hans-Jurgen}{H.-J.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Academic Press}%
+  }
+  \keyw{applied-math, physics}
+  \strng{namehash}{AGBWHJ1}
+  \strng{fullhash}{AGBWHJ1}
+  \field{labelyear}{1995}
+  \field{sortinit}{A}
+  \count{uniquename}{0}
+  \field{edition}{{F}ourth ({I}nternational)}
+  \field{howpublished}{Paperback}
+  \field{isbn}{0-12-059816-7}
+  \field{pages}{1029}
+  \field{title}{{Mathematical Methods for Physicists}}
+  \field{year}{1995}
+\endentry
+
+\entry{Beylkin87}{article}{}
+  \name{author}{1}{%
+    {{Beylkin}{B.}%
+     {Gregory}{G.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {IEEE}%
+  }
+  \list{institution}{1}{%
+    {Schlumberger-Doll Research, Ridgefield, CT}%
+  }
+  \verb{file}
+  \verb beylkin_87_discrete_1052532.pdf
+  \endverb
+  \field{journaltitle}{Acoustics, Speech and Signal Processing, IEEE
+  Transactions on}
+  \keyw{radon-transform}
+  \strng{namehash}{BG1}
+  \strng{fullhash}{BG1}
+  \field{labelyear}{1987}
+  \field{sortinit}{B}
+  \count{uniquename}{0}
+  \field{abstract}{%
+  {This paper describes the discrete Radon transform (DRT) and the exact
+  inversion algorithm for it. Similar to the discrete Fourier transform (DFT),
+  the DRT is defined for periodic vector-sequences and studied as a transform
+  in its own right. Casting the forward transform as a matrix-vector
+  multiplication, the key observation is that the matrix-although very
+  large-has a block-circulant structure. This observation allows construction
+  of fast direct and inverse transforms. Moreover, we show that the DRT can be
+  used to compute various generalizations of the classical Radon transform (RT)
+  and, in particular, the generalization where straight lines are replaced by
+  curves and weight functions are introduced into the integrals along these
+  curves. In fact, we describe not a single transform, but a class of
+  transforms, representatives of which correspond in one way or another to
+  discrete versions of the RT and its generalizations. An interesting
+  observation is that the exact inversion algorithm cannot be obtained directly
+  from Radon's inversion formula. Given the fact that the RT has no nontrivial
+  one-dimensional analog, exact invertibility makes the DRT a useful tool
+  geared specifically for multidimensional digital signal processing. Exact
+  invertibility of the DRT, flexibility in its definition, and fast
+  computational algorithm affect present applications and open possibilities
+  for new ones. Some of these applications are discussed in the paper.}%
+  }
+  \field{booktitle}{Acoustics, Speech and Signal Processing, IEEE Transactions
+  on}
+  \verb{doi}
+  \verb 10.1109/tassp.1987.1165108
+  \endverb
+  \field{issn}{0096-3518}
+  \field{number}{2}
+  \field{pages}{162\bibrangedash 172}
+  \field{title}{{Discrete {R}adon transform}}
+  \verb{url}
+  \verb http://dx.doi.org/10.1109/tassp.1987.1165108
+  \endverb
+  \field{volume}{35}
+  \field{month}{02}
+  \field{year}{1987}
+\endentry
+
+\entry{DriscollHealy94}{article}{}
+  \name{author}{2}{%
+    {{Driscoll}{D.}%
+     {J.~R.}{J.~R.}%
+     {}{}%
+     {}{}}%
+    {{Healy}{H.}%
+     {D.~M.}{D.~M.}%
+     {}{}%
+     {}{}}%
+  }
+  \verb{file}
+  \verb driscoll_94_computing_1037182.pdf
+  \endverb
+  \field{journaltitle}{Advances in Applied Mathematics}
+  \keyw{algorithms, geodesy, shconvolutions, spherical-harmonics}
+  \strng{namehash}{DJRHDM1}
+  \strng{fullhash}{DJRHDM1}
+  \field{labelyear}{1994}
+  \field{sortinit}{D}
+  \count{uniquename}{0}
+  \field{abstract}{%
+  {This paper considers the problem of efficient computation of the spherical
+  harmonic expansion, or Fourier transform, of functions defined on the two
+  dimensional sphere, S2. The resulting algorithms are applied to the efficient
+  computation of convolutions of functions on the sphere. We begin by proving
+  convolution theorems generalizing well known and useful results from the
+  abelian case. These convolution theorems are then used to develop a sampling
+  theorem on the sphere. which reduces the calculation of Fourier transforms
+  and convolutions of band-limited functions to discrete computations. We show
+  how to perform these efficiently, starting with an O(n(log n)2) time
+  algorithm for computing the Legendre transform of a function defined on the
+  interval [−1,1] sampled at n points there. Theoretical and experimental
+  results on the effects of finite precision arithmetic are presented. The
+  Legendre transform algorithm is then generalized to obtain an algorithm for
+  the Fourier transform, requiring O(n(log n)2) time, and an algorithm for its
+  inverse in O(n1.5) time, where n is the number of points on the sphere at
+  which the function is sampled. This improves the naive O(n2) bound, which is
+  the best previously known. These transforms give an O(n1.5) algorithm for
+  convolving two functions on the sphere.}%
+  }
+  \verb{doi}
+  \verb 10.1006/aama.1994.1008
+  \endverb
+  \field{issn}{01968858}
+  \field{number}{2}
+  \field{pages}{202\bibrangedash 250}
+  \field{title}{{Computing Fourier Transforms and Convolutions on the
+  2-Sphere}}
+  \verb{url}
+  \verb http://dx.doi.org/10.1006/aama.1994.1008
+  \endverb
+  \field{volume}{15}
+  \field{month}{06}
+  \field{year}{1994}
+\endentry
+
+\entry{HeiskanenMoritz}{book}{}
+  \name{author}{2}{%
+    {{Heiskanen}{H.}%
+     {Weikko~A.}{W.~A.}%
+     {}{}%
+     {}{}}%
+    {{Moritz}{M.}%
+     {Helmut}{H.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{2}{%
+    {W.H. Freeman}%
+    {Company}%
+  }
+  \list{location}{2}{%
+    {San Francisco}%
+    {London}%
+  }
+  \keyw{geodesy}
+  \strng{namehash}{HWAMH1}
+  \strng{fullhash}{HWAMH1}
+  \field{labelyear}{1967}
+  \field{sortinit}{H}
+  \count{uniquename}{0}
+  \field{pages}{364}
+  \field{title}{Physical Geodesy}
+  \field{year}{1967}
+\endentry
+
+\entry{EGM2008PavlisEtAl12}{article}{}
+  \name{author}{4}{%
+    {{Pavlis}{P.}%
+     {Nikolaos~K.}{N.~K.}%
+     {}{}%
+     {}{}}%
+    {{Holmes}{H.}%
+     {Simon~A.}{S.~A.}%
+     {}{}%
+     {}{}}%
+    {{Kenyon}{K.}%
+     {Steve~C.}{S.~C.}%
+     {}{}%
+     {}{}}%
+    {{Factor}{F.}%
+     {John~K.}{J.~K.}%
+     {}{}%
+     {}{}}%
+  }
+  \verb{file}
+  \verb pavlis_12_development_777366.pdf
+  \endverb
+  \field{journaltitle}{J. Geophys. Res.}
+  \keyw{geodesy, potential-fields, *geoprismsproposal}
+  \strng{namehash}{PNKHSAKSCFJK1}
+  \strng{fullhash}{PNKHSAKSCFJK1}
+  \field{labelyear}{2012}
+  \field{sortinit}{P}
+  \count{uniquename}{0}
+  \field{abstract}{%
+  {EGM2008 is a spherical harmonic model of the Earth's gravitational
+  potential, developed by a least squares combination of the ITG-GRACE03S
+  gravitational model and its associated error covariance matrix, with the
+  gravitational information obtained from a global set of area-mean free-air
+  gravity anomalies defined on a 5 arc-minute equiangular grid. This grid was
+  formed by merging terrestrial, altimetry-derived, and airborne gravity data.
+  Over areas where only lower resolution gravity data were available, their
+  spectral content was supplemented with gravitational information implied by
+  the topography. EGM2008 is complete to degree and order 2159, and contains
+  additional coefficients up to degree 2190 and order 2159. Over areas covered
+  with high quality gravity data, the discrepancies between EGM2008 geoid
+  undulations and independent GPS/Leveling values are on the order of ±5 to
+  ±10 cm. EGM2008 vertical deflections over USA and Australia are within ±1.1
+  to ±1.3 arc-seconds of independent astrogeodetic values. These results
+  indicate that EGM2008 performs comparably with contemporary detailed regional
+  geoid models. EGM2008 performs equally well with other GRACE-based
+  gravitational models in orbit computations. Over EGM96, EGM2008 represents
+  improvement by a factor of six in resolution, and by factors of three to six
+  in accuracy, depending on gravitational quantity and geographic area. EGM2008
+  represents a milestone and a new paradigm in global gravity field modeling,
+  by demonstrating for the first time ever, that given accurate and detailed
+  gravimetric data, asingle global model may satisfy the requirements of a very
+  wide range of applications.}%
+  }
+  \verb{doi}
+  \verb 10.1029/2011jb008916
+  \endverb
+  \field{issn}{0148-0227}
+  \field{number}{B4}
+  \field{pages}{B04406+}
+  \field{title}{The development and evaluation of the {E}arth {G}ravitational
+  {M}odel 2008 ({EGM2008})}
+  \verb{url}
+  \verb http://dx.doi.org/10.1029/2011jb008916
+  \endverb
+  \field{volume}{117}
+  \field{month}{04}
+  \field{year}{2012}
+\endentry
+
+\entry{Radon1917Translation86}{article}{}
+  \name{author}{1}{%
+    {{Radon}{R.}%
+     {Johann}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {IEEE}%
+  }
+  \field{journaltitle}{IEEE Transactions on Medical Imaging}
+  \keyw{radon-transform}
+  \strng{namehash}{RJ1}
+  \strng{fullhash}{RJ1}
+  \field{labelyear}{1986}
+  \field{sortinit}{R}
+  \count{uniquename}{0}
+  \verb{doi}
+  \verb 10.1109/tmi.1986.4307775
+  \endverb
+  \field{issn}{0278-0062}
+  \field{note}{English translation of the German text (Radon, 1917) by P.C.
+  Parks}
+  \field{number}{4}
+  \field{pages}{170\bibrangedash 176}
+  \field{title}{On the determination of functions from their integral values
+  along certain manifolds}
+  \verb{url}
+  \verb http://dx.doi.org/10.1109/tmi.1986.4307775
+  \endverb
+  \field{volume}{5}
+  \field{month}{12}
+  \field{year}{1986}
+\endentry
+
+\entry{SHTools}{misc}{}
+  \name{author}{1}{%
+    {{Wieczorek}{W.}%
+     {Mark~A.}{M.~A.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{spherical-harmonics}
+  \strng{namehash}{WMA1}
+  \strng{fullhash}{WMA1}
+  \field{labelyear}{2014}
+  \field{sortinit}{W}
+  \count{uniquename}{0}
+  \verb{doi}
+  \verb 10.5281/zenodo.12158
+  \endverb
+  \field{note}{This is a minor patch that fixes some incompatibility issues
+  that arose when using alternative makes (make all2 and make all3).}
+  \field{title}{{SHTOOLS - Tools for working with spherical harmonics
+  (v2.9.1)}}
+  \verb{url}
+  \verb http://dx.doi.org/10.5281/zenodo.12158
+  \endverb
+  \field{month}{10}
+  \field{year}{2014}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput
