@@ -1,0 +1,245 @@
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+
+\documentclass[aspectratio=43,serif,9pt]{beamer}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\usepackage{graphicx} % Allows including images
+\graphicspath{{/Users/frank/Desktop/GravMag/GravTomoStuff/}} %Setting the graphicspath
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{lmodern} %Lucida Modern font...
+\usepackage{gensymb} %Get the bloody degree symbol...
+\usepackage[backend=biber,style=authoryear]{biblatex}
+
+\usepackage{hyperref} %Typeset URLs correctly. Grrr.
+%\usepackage{breakurl} % Ditto. Double Grrrr.
+%\bibliography{fghorow}
+\addbibresource{fghorow.bib}% Syntax for version >= 1.2
+
+\newcommand{\Rad}{\mathcal{R}}
+
+%\newcommand{\vect}{\vec}
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+
+
+%----------------------------------------------------------------------------------------
+%       TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Gravitational Tomography]{Gravity Tomography via the 3D Radon Transform } % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author{Frank Horowitz} % Your name
+\institute[INSTOC/Cornell] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+INSTOC, Cornell University\\ % Your institution for the title page
+\medskip
+\textit{frank@horow.net} % Your email address
+}
+\date{} % Date, can be changed to a custom date
+%\date{April 22, 2016} % Date, can be changed to a custom date
+
+\begin{document}
+
+\begin{frame}
+  \titlepage % Print the title page as the first slide
+  %\footfullcite{EGM2008PavlisEtAl12}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{The Radon Transform in 3D}
+  In 2D, the Radon transform is a collection of line integrals -- also known as an X-ray transform. These are the familiar raypaths of CT scans. They are difficult to evaluate from the data we have.
+
+  In 3D, the Radon transform is a collection of plane integrals. These are no longer equivalent to the X-ray transform, since that remains as a collection of line integrals even in 3D. (Figure and notation due to \cite{Bortfeld13}.)
+\begin{columns}
+  % Frame content here
+  \column{0.3\textwidth}
+  \begin{figure}
+    \includegraphics[width=0.9\linewidth]{ThreeDRadonGeometry.pdf}
+  \end{figure}
+  \column{0.7\textwidth}
+  \[ \Rad f(p,\hat{\vect{n}}_\Omega) = \int_V f(\vect{x}) \delta(p - \vect{x}\cdot\hat{\vect{n}}_\Omega) d^3x
+  \]
+  The $\delta$ function chooses all $\vect{x}$ on the plane perpendicular to unit normal vector $\hat{\vect{n}}_\Omega$ at a distance $p$ from the origin.
+\end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Inverse 3D Radon Transform}
+
+  Once again the notation is from \cite{Bortfeld13}.
+
+  \[
+    f(\vect{x}) = - \frac{1}{8 \pi^2} \int_{4 \pi} \Rad'' f(\vect{x}\cdot\hat{\vect{n}}_\Omega,\hat{\vect{n}}_\Omega) d\Omega
+  \]
+  where
+  \[
+    \Rad'' \equiv \frac{\partial^2  }{\partial p^2} \Rad f(p,\hat{\vect{n}}_\Omega)
+  \]
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Fourier Domain view of Inverse 3D Radon Transform}
+  In the spatial Fourier domain, with the aid of the Fourier Slice theorem, this is the picture \parencite[image is again due to][]{Bortfeld13}:
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{FourierDomainInverse3DRadonTransform.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Approximating the Plane Integral (1).}
+  Discretize the planes as thin cylinders. I'll use Gauss' theorem and the gravitational vector flux over these cylindrical volumes to estimate their contained mass.
+
+  At the moment, the plan is to build the algorithm only along the $z$ axis (i.e. positive in the direction of the North Pole). I'll use rotations in the SH domain and the 3D Fourier spatial domain to rotate the different orientations of data into and back from the $z$ axis appropriately.
+
+  Fingers crossed.
+\end{frame}
+
+\begin{frame}
+
+\frametitle{Cylindrical Coordinates}
+
+\begin{figure}
+\includegraphics[width=0.75\linewidth]{CylinderSliceCoordinates.png}
+\end{figure}
+
+The coordinate system. As usual, the $r$ and $dr$ vectors are in the radial direction, and the angle $\theta$ is measured positively from the $x$ towards the $y$ axis. Surface normals are positive outwards.
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Gauss' Law for gravity}
+  By Gauss' theorem, the mass $M$ inside any closed surface is given by
+  \begin{align}
+    -4 \pi G M &= \oint_{S} \vect{g} \cdot  \vect{dA} \label{eq:GaussLaw}
+  \end{align}
+  where $G$ is Newton's constant, $\vect{g}$ is the gravity vector on the surface $S$, and $\vect{dA}$ is a (positive outwards) oriented element of the surface.
+
+  We are discretely approximating the plane integral, so $\vect{dA}$ on the circular face of the cylinder should be perpendicular to the $z$ axis -- i.e. the $\vect{r}$ direction of the figure in the previous slide. This affects the magnitude of the dot product, since only at the equator do $\vect{dA}$ and  $\vect{g}$ align (on average).
+\end{frame}
+
+\begin{frame}
+  \frametitle{Pieces of the Surface Integral}
+
+  The full surface integral is composed of different pieces:
+  \begin{subequations}
+  \begin{align}
+    \oint_{S} \vect{g} \cdot  \vect{dA} = &\quad \int_{+z~\mathrm{face}} \vect{g} \cdot  \vect{dA} \\
+                                          &+ \int_{-z~\mathrm{face}} \vect{g} \cdot  \vect{dA} \nonumber \\
+                                          &+ \int_{r~\mathrm{faces}} \vect{g} \cdot  \vect{dA} \nonumber \\
+    = &~2\int_{+z~\mathrm{face}} \vect{g} \cdot  \vect{dA}  \label{eq:TopBottom} \\
+    &+ \int_{r~\mathrm{faces}} \vect{g} \cdot  \vect{dA} \nonumber
+  \end{align}
+  \end{subequations}
+
+
+  Where equality \eqref{eq:TopBottom} arises by symmetry for our thin cynlinders: $\int_{+z~\mathrm{face}}(\cdots) = \int_{-z~\mathrm{face}}(\cdots)$ because the dot product $\vect{g} \cdot \vect{dA}$ is negative in both cases.
+\end{frame}
+
+\begin{frame}
+  \frametitle{The Top Face Integral}
+
+  Now, work on evaluating the $+z~\mathrm{face}$ integral. As is well known, outside of the finite but extended body,
+  one can treat its gravitation as if the (still unknown) mass $M$ were concentrated solely at the center of mass. In a (right circular)
+  cylinder of height $\Delta z$, that center of mass occurs at $r(z)=0$ and $\Delta z/2$. Labeling the
+  position of the cylinder's center of mass as $\vect{x}_\mathrm{COM}$, equation \eqref{eq:NewtonianGrav} uses an
+  ``infinitesimal cylinder''  approximation that $(\vect{dA} - \vect{x}_\mathrm{COM}) \cdot \vect{\hat{e}}_z = 0$ everywhere except at $r=0$.
+    So:
+  \begin{align}
+    \int_{+z~\mathrm{face}} \vect{g} \cdot  \vect{dA} &= \int_{+z~\mathrm{face}} -\vect{\hat{e}}_z \frac{GM}{(\Delta z / 2)^2}  \delta(r) \cdot \vect{dA} \label{eq:NewtonianGrav} \\
+                                                   &= -\frac{GM}{(\Delta z / 2)^2} \int_{+z~\mathrm{face}} dA \nonumber\\
+                                                   &=   -\pi r^2(z) \frac{GM}{(\Delta z / 2)^2} \label{eq:TopFaceIntegral}
+  \end{align}
+  Here, $\delta(r)$ is the Dirac delta function, Newton's Universal gravitation law is used in equation \eqref{eq:NewtonianGrav}, and the minus sign comes from $\hat{\vect{g}} \cdot \widehat{\vect{dA}} = -1$.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Approximating the Plane Integral (2)}
+  Substituting equations \eqref{eq:TopFaceIntegral} and  \eqref{eq:TopBottom} into equation \eqref{eq:GaussLaw} yields:
+  \begin{align*}
+    -4 \pi G M &= -2 \pi r^2(z) \frac{GM}{(\Delta z / 2)^2} \\
+               &\quad + \int_{r~\mathrm{faces}} \vect{g} \cdot  \vect{dA}
+  \end{align*}
+  Rearranging:
+  \begin{align*}
+    M \left(-4 \pi G +  2 \pi r^2(z) \frac{G}{(\Delta z / 2)^2}
+    \right) & = \int_{r~\mathrm{faces}} \vect{g} \cdot  \vect{dA}
+  \end{align*}
+  which leads to:
+  \begin{align}
+    M  & =\frac{1}{2 \pi G \left( \frac{r^2(z)}{(\Delta z / 2)^2} -2
+    \right)} \int_{r~\mathrm{faces}} \vect{g} \cdot  \vect{dA} \label{eq:FinalM}
+  \end{align}
+It appears that equation \eqref{eq:FinalM} has a sign error. Bugger.
+
+\end{frame}
+
+\begin{frame}[t,allowframebreaks]
+  \frametitle{References}
+  \small
+  \printbibliography
+\end{frame}
+
+ \end{document}
