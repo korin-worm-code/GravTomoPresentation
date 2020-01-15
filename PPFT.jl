@@ -11,14 +11,14 @@ function DirectInversion3DPPFT(ÎΩppx, ÎΩppy, ÎΩppz)
     # This is Algorithm 1 of Averbuch et al. (2016)
     qnp1,np1,foo = size(ÎΩppx)
     @assert foo == np1
-    q = qnp1 / np1
+    q = qnp1 ÷ np1
     n = np1 - 1
     qn = qnp1 - 1
     # Algorithm line 3
     # FIXME: Check that Complex is needed...
-    ÎD = zeros(::Complex,(np1,np1,np1))
+    ÎD = zeros(ComplexF32,(np1,np1,np1))
     # Algorithm line 4
-    for j = 1:(n/2)
+    for j = 1:(n÷2)
         # The x direction
         # Algorithm line 5
         # FIXME: make sure that .= is correct semantics for <- in the algorithm...
@@ -30,7 +30,7 @@ function DirectInversion3DPPFT(ÎΩppx, ÎΩppy, ÎΩppz)
         # Algorithm line 7
         ÎD[:,j,:] .= recover2d(ÎΩppy[q*(j-1)+1,:,:],ÎD[:,j,:],j-1,q=q)
         # Algorithm line 8
-        ÎD[:,n+2-j,:] .= recover2d(ÎΩppy[qn-q*(j-1)+1,np1:-1:1,np1:-1:1],ÎD[:,n+2-j,j-1],q=q)
+        ÎD[:,n+2-j,:] .= recover2d(ÎΩppy[qn-q*(j-1)+1,np1:-1:1,np1:-1:1],ÎD[:,n+2-j,:],j-1,q=q)
 
         # The z direction
         # Algorithm line 9
@@ -43,14 +43,13 @@ function DirectInversion3DPPFT(ÎΩppx, ÎΩppy, ÎΩppz)
 
     # Center point
     # Algorithm line 12
-    ÎD[(n/2)+1,(n/2)+1,(n/2)+1] .= ÎΩppx[(3*n/2)+1,(n/2)+1,(n/2)+1]
+    ÎD[(n÷2)+1,(n÷2)+1,(n÷2)+1] .= ÎΩppx[(3*n÷2)+1,(n÷2)+1,(n÷2)+1]
 
     # Algorithm line 13; the return value...
     return InvDecimatedFreq(ÎD,q=q,algo="JuliaToeplitz")
 end
 
-function InvDecimatedFreq(Ĩ;q,algo="JuliaToeplitz")
-	np1,foo,bar = size(Ĩ)
+function InvDecimatedFreq(Ĩ;q,algo="JuliaToeplitz") np1,foo,bar = size(Ĩ)
 	@assert np1 == foo
 	@assert np1 == bar
 	n = np1 - 1
@@ -108,7 +107,7 @@ function InvDecimatedFreq(Ĩ;q,algo="JuliaToeplitz")
 end
 
 function hvect(left,middle,right)
-	reshape( vcat([left;], [middle;],  [right;]),(1,:))
+	return reshape( vcat([left;], [middle;],  [right;]),(1,:))
 end
 
 # This is Algorithm 2 of Averbuch et al. (2016)
@@ -117,7 +116,7 @@ function recover2d(ÛΩpp, ÛD, j; q)
     @assert foo == np1
     n = np1 -1
     # Algorithm line 3
-    α = (n/2 - j)/(n/2)
+    α = (n÷2 - j)/(n÷2)
     # Algorithm line 4
     m = (q*n)+1
     # Algorithm line 5
@@ -130,9 +129,9 @@ function recover2d(ÛΩpp, ÛD, j; q)
     # Algorithm Line 8
     # In matlab, the code is an instantiated array from a range of values.
     # Match those semantics with a Julia list comprehension...
-    y₁ = [ y * (-2 * q * π / m) for y in (-(n/2):(n/2)) ]
+    y₁ = [ y * (-2 * q * π / m) for y in (-(n÷2):(n÷2)) ]
     # Algorithm Line 9; again check Matlab code
-    x₁ = [ x * (-2 * q * α * π / m) for x in (-(n/2):(n/2)) ]
+    x₁ = [ x * (-2 * q * α * π / m) for x in (-(n÷2):(n÷2)) ]
     # Algorithm Line 10
     C = zeros(np1,np1)
     # Algorithm line 11
@@ -140,14 +139,14 @@ function recover2d(ÛΩpp, ÛD, j; q)
         # Algorithm line 12
         C[k,:] .= TrigResample(ÛΩpp[k, 1:np1],y₁,x₁, algo="LS")
         # Algorithm line 13
-        C[n +2 -k, :] .= TrigResample(ÛΩpp[n + 2 - k, 1:np1],y₁,x₁, algo="LS")
+        C[n+2-k,:] .= TrigResample(ÛΩpp[n+2-k, 1:np1],y₁,x₁, algo="LS")
     # Algorithm line 14
     end
     # Algorithm line 15
     # FIXME: consider keeping this as ranges for efficiency...
     # Or, alternatively, recode using the [1:10;] syntax to instantiate the array, rather
     # than a list comprehension...
-    x = [xi*(-2)*(q*π/m) for xi in -(n/2 - j):(n/2 - j)]
+    x = [xi*(-2)*(q*π/m) for xi in -(n÷2 - j):(n÷2 - j)]
     # Algorithm line 16
     # WARNING! The matlab code for y produces a row-vector. I am jumping through
     # hoops here to make sure that the julia code produces the same thing.
@@ -155,7 +154,7 @@ function recover2d(ÛΩpp, ÛD, j; q)
     # this could be the site of either a thrown error, or subtle bugs.
     # DANGER!!!!
 	#y = reshape( vcat([-n/2:-n/2+j-1;], [-n/2:n/2;].*α,  [n/2-j+1:n/2;]),(1,:)) .* (-2) * (q * π / m)
-    y = hvect([-n/2:-n/2+j-1;], [-n/2:n/2;].*α, [n/2-j+1:n/2;]) .* (-2) * (q * π / m)
+    y = hvect([-n÷2:-n÷2+j-1;], [-n÷2:n÷2;].*α, [n÷2-j+1:n÷2;]) .* (-2) * (q * π / m)
     # Algorithm line 17
     R₁ = zeros(np1 - 2*j, np1)
     # Algorithm line 18
@@ -327,20 +326,22 @@ function TrigResample(y, f, x; algo = "LS")
 	@assert N == foo
 	M, = size(x)
 	#FIXME consider doing this calculation in 32 bits for speed.
-	A = zeros(::Complex64,(N,N))
+	A = zeros(ComplexF32,(N,N))
 
 	for j in 1:N
 		for k in 1:N
-			a[j,k] .= exp(1im * k * y[k])
+			A[j,k] = exp(1im * k * y[k])
 		end
 	end
+	col1 = (A' * A)[:,1]
+	A_star_A = Toeplitz(col1,col1)
 	# Solve the bloody thing using least squares or whatever \ chooses
-	α = A \ f
+	α = A_star_A \ (A' * f)
 	# Now evaluate the resulting polynomial...
-	result = zeros(::Complex64, M)
-	for k in -N/2:(N/2)-1
+	result = zeros(ComplexF32, M)
+	for k in -N÷2:(N÷2)-1
 		for i in 1:M
-			result[i] .+= α[k] * exp(1im * k * x[i])
+			result[i] += α[k] * exp(1im * k * x[i])
 		end
 	end
 	return result
