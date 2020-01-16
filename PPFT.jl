@@ -11,11 +11,12 @@ function DirectInversion3DPPFT(ÎΩppx, ÎΩppy, ÎΩppz)
     # This is Algorithm 1 of Averbuch et al. (2016)
     qnp1,np1,foo = size(ÎΩppx)
     @assert foo == np1
-    q = qnp1 ÷ np1
+	# qnp1 == (q*n)+1
     n = np1 - 1
     qn = qnp1 - 1
+    q = qn ÷ n
+	@assert qn == q*n
     # Algorithm line 3
-    # FIXME: Check that Complex is needed...
     ÎD = zeros(ComplexF32,(np1,np1,np1))
     # Algorithm line 4
     for j = 1:(n÷2)
@@ -129,11 +130,13 @@ function recover2d(ÛΩpp, ÛD, j; q)
     # Algorithm Line 8
     # In matlab, the code is an instantiated array from a range of values.
     # Match those semantics with a Julia list comprehension...
-    y₁ = [ y * (-2 * q * π / m) for y in (-(n÷2):(n÷2)) ]
+	# FIXME: (Maybe?) Cast this to Float32 to avoid error in Toeplitz stuff???
+    y₁ = Float32.([ y * (-2 * q * π / m) for y in (-(n÷2):(n÷2)) ])
     # Algorithm Line 9; again check Matlab code
-    x₁ = [ x * (-2 * q * α * π / m) for x in (-(n÷2):(n÷2)) ]
+    x₁ = Float32.([ x * (-2 * q * α * π / m) for x in (-(n÷2):(n÷2)) ])
     # Algorithm Line 10
-    C = zeros(np1,np1)
+	# FIXME: (Maybe?) Make C be Float32???
+    C = zeros(Float32,(np1,np1))
     # Algorithm line 11
     for k = 1:j
         # Algorithm line 12
@@ -179,6 +182,36 @@ function recover2d(ÛΩpp, ÛD, j; q)
     # Algorithm line 28
     result[1+j:np1-j,1+j:np1-j] .= R₂[:,:]
     return result
+end
+
+function TrigResample(ŷ, f, x; algo = "LS")
+	N, = size(y)
+	foo, = size(f)
+	@assert N == foo
+	M, = size(x)
+	#FIXME consider doing this calculation in 32 bits for speed.
+	A = zeros(ComplexF32,(N,N))
+
+	#FIXME: need to back transform ŷ somehow...
+
+
+	# for j in 1:N
+	# 	for k in 1:N
+	# 		A[j,k] = exp(1im * k * y[k])
+	# 	end
+	# end
+	col1 = (A' * A)[:,1]
+	A_star_A = Toeplitz(col1,col1)
+	# Solve the bloody thing using least squares or whatever \ chooses
+	α = A_star_A \ (A' * f)
+	# Now evaluate the resulting polynomial...
+	result = zeros(ComplexF32, M)
+	for k in -N÷2:(N÷2)-1
+		for i in 1:M
+			result[i] += α[k] * exp(1im * k * x[i])
+		end
+	end
+	return result
 end
 
 # This is Algorithm 3 in Averbuch et al. (2016)
@@ -320,79 +353,52 @@ end
 # of simply formulating a least squares problem for the tigonometric interpolations.
 
 
-function TrigResample(y, f, x; algo = "LS")
-	N, = size(y)
-	foo, = size(f)
-	@assert N == foo
-	M, = size(x)
-	#FIXME consider doing this calculation in 32 bits for speed.
-	A = zeros(ComplexF32,(N,N))
-
-	for j in 1:N
-		for k in 1:N
-			A[j,k] = exp(1im * k * y[k])
-		end
-	end
-	col1 = (A' * A)[:,1]
-	A_star_A = Toeplitz(col1,col1)
-	# Solve the bloody thing using least squares or whatever \ chooses
-	α = A_star_A \ (A' * f)
-	# Now evaluate the resulting polynomial...
-	result = zeros(ComplexF32, M)
-	for k in -N÷2:(N÷2)-1
-		for i in 1:M
-			result[i] += α[k] * exp(1im * k * x[i])
-		end
-	end
-	return result
-end
-
 # # WARNING! Need to establish which "type" of NUFFT this routine
 # # is calling by looking up references 15 and 16 in Averbuch et al. (2016)
 #
-# # Algorithm 5
-# function TrigResample(y, f, x; algo = "Toeplitz")
-# 	throw(ArgumentError("The fast Toeplitz algorithm is not fully implemented (yet)."))
-#
-#     # This assert is incorrect. If I ever get back to this algorithm, fix it!
-# 	n, = size(y)
-# 	foo, = size(x)
-# 	@assert n == foo
-#
-# 	# Algorithm line 3
-# 	# FIXME: HUH??? Why are we defining a full row vector
-# 	# when it appears that we are only using the first element of it
-# 	# in the rest of this routine???
-# 	k = [-n/2:n/2-1;]
-#
-# 	# Algorithm line 4
-# 	# FIXME (Maybe?) Code smell; what is going on with Length(y) instead
-# 	# of simply "n" in their algorithm??? Check the matlab code...
-# 	c = n * NUFFT₁(y,exp(1im * k[1] .* y ),-1,n)
-# 	# Algorithm line 5
-# 	(M₁,M₂,M₃,M₄) = ToeplitzInv(c)
-# 	# Algorithm line 6:8 ; loop unrolled by hand here...
-# 	# FIXME (Maybe?) The algorithm suggests computing these in the preprocessing...
-# 	D₁ = ToeplitzDiag(M₁[:,1],M₁[1,:])
-# 	D₂ = ToeplitzDiag(M₂[:,1],M₂[1,:])
-# 	D₃ = ToeplitzDiag(M₃[:,1],M₃[1,:])
-# 	D₄ = ToeplitzDiag(M₄[:,1],M₄[1,:])
-# 	# Algorithm line 9
-# 	v = n * NUFFT₁(y,f,-1,n)
-# 	# Algorithm line 10
-# 	α = ToeplitzInvMul(D₁,D₂,D₃,D₄,v)
-# 	# Algorithm line 11
-# 	g = NUFFT₂(x,1,n,α)
-# 	# Return value
-# 	return g
-# # End of Algorithm 5
-# end
-#
-# # Algorithm 6
-# function ToeplitzInv(c)
-#
-# return
-# # End of Algorithm 6
+# Algorithm 5
+function TrigResample(y, f, x; algo = "Toeplitz")
+	throw(ArgumentError("The fast Toeplitz algorithm is not fully implemented (yet)."))
+
+    # This assert is incorrect. If I ever get back to this algorithm, fix it!
+	n, = size(y)
+	foo, = size(x)
+	@assert n == foo
+
+	# Algorithm line 3
+	# FIXME: HUH??? Why are we defining a full row vector
+	# when it appears that we are only using the first element of it
+	# in the rest of this routine???
+	k = [-n/2:n/2-1;]
+
+	# Algorithm line 4
+	# FIXME (Maybe?) Code smell; what is going on with Length(y) instead
+	# of simply "n" in their algorithm??? Check the matlab code...
+	c = n * NUFFT₁(y,exp(1im * k[1] .* y ),-1,n)
+	# Algorithm line 5
+	(M₁,M₂,M₃,M₄) = ToeplitzInv(c)
+	# Algorithm line 6:8 ; loop unrolled by hand here...
+	# FIXME (Maybe?) The algorithm suggests computing these in the preprocessing...
+	D₁ = ToeplitzDiag(M₁[:,1],M₁[1,:])
+	D₂ = ToeplitzDiag(M₂[:,1],M₂[1,:])
+	D₃ = ToeplitzDiag(M₃[:,1],M₃[1,:])
+	D₄ = ToeplitzDiag(M₄[:,1],M₄[1,:])
+	# Algorithm line 9
+	v = n * NUFFT₁(y,f,-1,n)
+	# Algorithm line 10
+	α = ToeplitzInvMul(D₁,D₂,D₃,D₄,v)
+	# Algorithm line 11
+	g = NUFFT₂(x,1,n,α)
+	# Return value
+	return g
+# End of Algorithm 5
+end
+
+# Algorithm 6
+function ToeplitzInv(c)
+
+return
+# End of Algorithm 6
 #
 #
 # # Algorithm 7
