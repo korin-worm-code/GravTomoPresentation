@@ -71,6 +71,7 @@
 \usepackage{lmodern} %Lucida Modern font...
 \usepackage{gensymb} %Get the bloody degree symbol...
 \usepackage[backend=biber,style=authoryear]{biblatex}
+\usepackage{caption}
 
 \usepackage{hyperref} %Typeset URLs correctly. Grrr.
 %\usepackage{breakurl} % Ditto. Double Grrrr.
@@ -135,7 +136,7 @@ INSTOC, Cornell University\\ % Your institution for the title page
   \]
   where
   \[
-    \Rad'' \equiv \frac{\partial^2  }{\partial p^2} \Rad f(p,\hat{\vect{n}}_\Omega)
+    \Rad'' f(p,\hat{\vect{n}}_\Omega) \equiv \frac{\partial^2  }{\partial p^2} \Rad f(p,\hat{\vect{n}}_\Omega)
   \]
 
 \end{frame}
@@ -195,44 +196,94 @@ The coordinate system. As usual, the $r$ and $dr$ vectors are in the radial dire
   \end{subequations}
 
 
-  Where equality \eqref{eq:TopBottom} arises by symmetry for our thin cynlinders: $\int_{+z~\mathrm{face}}(\cdots) = \int_{-z~\mathrm{face}}(\cdots)$ because the dot product $\vect{g} \cdot \vect{dA}$ is negative in both cases.
+  Where equality \eqref{eq:TopBottom} arises by symmetry for our thin cylinders: $\int_{+z~\mathrm{face}}(\cdots) = \int_{-z~\mathrm{face}}(\cdots)$ because the dot product $\vect{g} \cdot \vect{dA}$ is negative in both cases.
 \end{frame}
 
 \begin{frame}
-  \frametitle{The Top Face Integral}
+  \frametitle{Geometry of the Top Face}
 
-  Now, work on evaluating the $+z~\mathrm{face}$ integral. As is well known, outside of the finite but extended body,
-  one can treat its gravitation as if the (still unknown) mass $M$ were concentrated solely at the center of mass. In a (right circular)
-  cylinder of height $\Delta z$, that center of mass occurs at $r(z)=0$ and $\Delta z/2$. Labeling the
-  position of the cylinder's center of mass as $\vect{x}_\mathrm{COM}$, equation \eqref{eq:NewtonianGrav} uses an
-  ``infinitesimal cylinder''  approximation that $(\vect{dA} - \vect{x}_\mathrm{COM}) \cdot \vect{\hat{e}}_z = 0$ everywhere except at $r=0$.
-    So:
-  \begin{align}
-    \int_{+z~\mathrm{face}} \vect{g} \cdot  \vect{dA} &= \int_{+z~\mathrm{face}} -\vect{\hat{e}}_z \frac{GM}{(\Delta z / 2)^2}  \delta(r) \cdot \vect{dA} \label{eq:NewtonianGrav} \\
-                                                   &= -\frac{GM}{(\Delta z / 2)^2} \int_{+z~\mathrm{face}} dA \nonumber\\
-                                                   &=   -\pi r^2(z) \frac{GM}{(\Delta z / 2)^2} \label{eq:TopFaceIntegral}
-  \end{align}
-  Here, $\delta(r)$ is the Dirac delta function, Newton's Universal gravitation law is used in equation \eqref{eq:NewtonianGrav}, and the minus sign comes from $\hat{\vect{g}} \cdot \widehat{\vect{dA}} = -1$.
+
+  \begin{figure}[h!]
+  \includegraphics[width=0.9\linewidth]{CylinderGeom.pdf}
+    \caption{We need a picture of a thin cylinder top face geometry for evaluating the top face integral. This is a cross-section of the cylinder, containing the $z$ axis. Here, COM is the center of mass, $R$ is a function of $z$, $\vect{\rho}$ is the vector to a position of interest on the top face from the COM, and we are focused on the top half of the thin cylinder (total height $\Delta z$) for clarity.
+}
+  \label{fig:TopFaceGeom}
+\end{figure}
+
+
+
 \end{frame}
+
+\begin{frame}
+  \frametitle{The Top Face Integral (1)}
+   Now, we work on evaluating the $+z~\mathrm{face}$ integral. Since we have no other information, approximate the
+   gravitation as if the (still unknown) mass $M$ were concentrated solely at the center of mass. In a (right circular)
+   cylinder of height $\Delta z$, that center of mass occurs at $r=0$ and $\Delta z/2$ as in the previous figure.
+
+   From equation \eqref{eq:TopBottom}, we expand $\int_{+z~\mathrm{face}} (\cdots)\ \vect{dA} = \int_0^{2\pi} \int_0^R (\cdots) \vect{\hat{e}_z}\ dr\ r\ d\theta$. By symmetry, vectors pointing at the center of mass of the disk have no $\theta$ component, so the only ``interesting'' integral is the one over $r$:
+   \[
+     \int_0^{2\pi}  \int_0^R (\cdots)\ dr\ r\/d\theta = 2\pi \int_0^R (\cdots)\ r\ dr
+   \]
+   On the top face, $\vect{\widehat{dA}} = \vect{\hat{e}_z}$. Also, $\vect{g} = -GM/\|\vect{\rho}(r)\|^2 \vect{\hat{e}_\rho}$ where $\vect{\rho}(r)$ is the vector from the center of mass to the position of interest on the top face. The length $\|\vect{\rho}(r)\| = \sqrt{(\Delta z/2)^2 + r^2}$, so $\|\vect{\rho}(r)\|^2 = (\Delta z/2)^2 + r^2$.
+   From equation \eqref{eq:TopBottom} we need to evaluate $\vect{g} \cdot \vect{dA} = \vect{g} \cdot dr\ r\ d\theta \vect{\hat{e}_z}$. But that is $\|\vect{g}\|\ dr\ r\ d\theta\  \cos(\phi)$ where $\phi$ is the angle between $\vect{\hat{e}_\rho}$ and $\vect{\hat{e}_z}$. From figure \ref{fig:TopFaceGeom},
+   \[ \cos(\phi) = \frac{\Delta z/2}{\left [  (\Delta z/2)^2 + r^2 \right ]^{1/2}}
+   \]
+
+ \end{frame}
+
+ \begin{frame}
+   \frametitle{The Top Face Integral (2)}
+   So, putting it all together, for the top face we need to evaluate the definite inegral:
+   \begin{align}
+     \int_{+z~\mathrm{face}} \vect{g} \cdot \vect{dA} &= 2\pi \int_0^R \frac{-G M}{\left[(\Delta z/2)^2 + r^2\right]} \frac{\Delta z/2}{\left [  (\Delta z/2)^2 + r^2 \right ]^{1/2}} \ r\ dr \nonumber\\
+     \ &=2\pi \int_0^R \frac{-G M \Delta z/2}{\left [  (\Delta z/2)^2 + r^2 \right ]^{3/2}} \ r\ dr\nonumber\\
+     \ &=2\pi \left[ -\frac{-G M \Delta z/2}{\sqrt{(\Delta z/2)^2 + r^2}} \right]_{r=0}^{r=R}\nonumber\\
+     \ &=2\pi G M \left[ \frac{\Delta z/2}{\sqrt{(\Delta z/2)^2 + R^2}} - \frac{\Delta z/2}{\sqrt{(\Delta z/2)^2}}\right]\nonumber\\
+     \ &=2\pi G M \left[ \frac{\Delta z/2}{\sqrt{(\Delta z/2)^2 + R^2}} - 1\right]
+         \label{eq:TopFaceIntegral}
+   \end{align}
+   where the integral was evaluated using Wolfram Alpha.
+
+   Note that, because the first term in the final expression is always $< 1$, the result is always negative -- as it should be from the dot product.
+
+ \end{frame}
+
+
+
+% \begin{frame}
+%   \frametitle{The Top Face Integral}
+
+%   Now, work on evaluating the $+z~\mathrm{face}$ integral. As is well known, outside of the finite but extended body,
+%   one can treat its gravitation as if the (still unknown) mass $M$ were concentrated solely at the center of mass. In a (right circular)
+%   cylinder of height $\Delta z$, that center of mass occurs at $r(z)=0$ and $\Delta z/2$. Labeling the
+%   position of the cylinder's center of mass as $\vect{x}_\mathrm{COM}$, equation \eqref{eq:NewtonianGrav} uses an
+%   ``infinitesimal cylinder''  approximation that $(\vect{dA} - \vect{x}_\mathrm{COM}) \cdot \vect{\hat{e}}_z = 0$ everywhere except at $r=0$.
+%     So:
+%   \begin{align}
+%     \int_{+z~\mathrm{face}} \vect{g} \cdot  \vect{dA} &= \int_{+z~\mathrm{face}} -\vect{\hat{e}}_z \frac{GM}{(\Delta z / 2)^2}  \delta(r) \cdot \vect{dA} \label{eq:NewtonianGrav} \\
+%                                                    &= -\frac{GM}{(\Delta z / 2)^2} \int_{+z~\mathrm{face}} dA \nonumber\\
+%                                                    &=   -\pi r^2(z) \frac{GM}{(\Delta z / 2)^2} \label{eq:TopFaceIntegral}
+%   \end{align}
+%   Here, $\delta(r)$ is the Dirac delta function, Newton's Universal gravitation law is used in equation \eqref{eq:NewtonianGrav}, and the minus sign comes from $\hat{\vect{g}} \cdot \widehat{\vect{dA}} = -1$.
+% \end{frame}
 
 \begin{frame}
   \frametitle{Approximating the Plane Integral (2)}
   Substituting equations \eqref{eq:TopFaceIntegral} and  \eqref{eq:TopBottom} into equation \eqref{eq:GaussLaw} yields:
   \begin{align*}
-    -4 \pi G M &= -2 \pi r^2(z) \frac{GM}{(\Delta z / 2)^2} \\
+    -4 \pi G M &= 4\pi G M \left[ \frac{\Delta z/2}{\sqrt{(\Delta z/2)^2 + R^2}} - 1\right]\\
                &\quad + \int_{r~\mathrm{faces}} \vect{g} \cdot  \vect{dA}
   \end{align*}
   Rearranging:
   \begin{align*}
-    M \left(-4 \pi G +  2 \pi r^2(z) \frac{G}{(\Delta z / 2)^2}
-    \right) & = \int_{r~\mathrm{faces}} \vect{g} \cdot  \vect{dA}
+    -4 \pi G M \left[ 1 + \frac{\Delta z/2}{\sqrt{(\Delta z/2)^2 + R^2}} - 1\right]
+    & = \int_{r~\mathrm{faces}} \vect{g} \cdot  \vect{dA}
   \end{align*}
   which leads to:
   \begin{align}
-    M  & =\frac{1}{2 \pi G \left( \frac{r^2(z)}{(\Delta z / 2)^2} -2
-    \right)} \int_{r~\mathrm{faces}} \vect{g} \cdot  \vect{dA} \label{eq:FinalM}
+    M  & = \frac{-1}{4 \pi G} \frac{\sqrt{(\Delta z/2)^2 + R^2}}{\Delta z/2} \int_{r~\mathrm{faces}} \vect{g} \cdot  \vect{dA} \label{eq:FinalM}
   \end{align}
-It appears that equation \eqref{eq:FinalM} has a sign error. Bugger.
+Because the dot product is negative, the resulting $M$ is positive. Phew.
 
 \end{frame}
 
